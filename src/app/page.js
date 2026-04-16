@@ -65,25 +65,28 @@
 // }
 
 
-import Link from "next/link";
+import Navigation from "@/components/Navigation";
+import Hero from "@/components/Hero";
+import ListingsGrid from "@/components/ListingsGrid";
+import Footer from "@/components/Footer";
 
 export default function HomePage() {
-  const inzeraty = [
-    { id: 1, title: "iPhone 13" },
-    { id: 2, title: "Notebook" },
-  ];
-
   return (
-    <div>
-      <h1>Inzeráty</h1>
+    <div className="flex flex-col min-h-screen bg-gray-50">
+      {/* Navigation */}
+      <Navigation />
 
-      {inzeraty.map((item) => (
-        <Link key={item.id} href={`/listing/${item.id}`}>
-          <div style={{ border: "1px solid black", margin: 10 }}>
-            <h2>{item.title}</h2>
-          </div>
-        </Link>
-      ))}
+      {/* Main Content */}
+      <main className="flex-1">
+        {/* Hero Section */}
+        <Hero />
+
+        {/* Listings Grid */}
+        <ListingsGrid />
+      </main>
+
+      {/* Footer */}
+      <Footer />
     </div>
   );
 }
