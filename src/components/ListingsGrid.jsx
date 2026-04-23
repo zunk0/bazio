@@ -127,7 +127,7 @@ try {
     `);
     rows = result;
   } catch (error) {
-    console.error("DB error, using mock data:");
+    console.log("DB error, using mock data:");
     rows = mockListings;
   }
 

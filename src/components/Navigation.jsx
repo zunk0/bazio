@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 
 export default function Navigation() {
   return (
@@ -6,7 +7,14 @@ export default function Navigation() {
       <div className="max-w-6xl mx-auto px-4 py-4 flex items-center justify-between">
         {/* Logo */}
         <Link href="/" className="flex items-center gap-2">
-          <span className="text-2xl font-bold text-blue-600">Bazio</span>
+          <span className="text-2xl font-bold text-blue-600">
+            <Image
+              src="/bazio.svg"
+              alt="Bazio"
+              width={130}
+              height={40}
+            />
+          </span>
         </Link>
 
         {/* Search Box */}

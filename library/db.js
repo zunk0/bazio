@@ -30,7 +30,7 @@ export const createConnection = async () => {
     }
     return connection;
   } catch (err) {
-    console.error("Connection failed:");
+    console.log("Connection failed:");
     throw err;
   }
 };
