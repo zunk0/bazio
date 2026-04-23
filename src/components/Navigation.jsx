@@ -18,15 +18,37 @@ export default function Navigation() {
         </Link>
 
         {/* Search Box */}
-        <div className="flex-1 max-w-md mx-8">
-          <div className="flex gap-2">
+        <div className="flex-1 max-w-2xl mx-8">
+          <div className="flex items-center bg-gray-50 border border-gray-200 rounded-xl p-1 shadow-sm focus-within:ring-2 focus-within:ring-blue-100 focus-within:border-blue-400 transition-all">
+            <select className="bg-transparent text-gray-600 text-xs font-semibold px-3 py-2 outline-none border-r border-gray-200 cursor-pointer hover:bg-gray-100 rounded-l-lg transition">
+              <option>All Categories</option>
+              <option>Electronics</option>
+              <option>Books</option>
+              <option>Furniture</option>
+              <option>Clothing</option>
+              <option>Sports</option>
+              <option>Other</option>
+            </select>
+            
+            <select className="bg-transparent text-gray-600 text-xs font-semibold px-3 py-2 outline-none border-r border-gray-200 cursor-pointer hidden md:block hover:bg-gray-100 transition">
+              <option>All Locations</option>
+              <option>Bratislava</option>
+              <option>Košice</option>
+              <option>Banská Bystrica</option>
+              <option>Žilina</option>
+              <option>Nitra</option>
+            </select>
+
             <input
               type="text"
               placeholder="Search listings..."
-              className="w-full px-4 py-2 rounded-lg bg-gray-100 border-transparent focus:bg-white focus:ring-2 focus:ring-blue-300 text-sm focus:outline-none transition-all"
+              className="flex-1 bg-transparent px-4 py-2 text-sm focus:outline-none text-gray-700"
             />
-            <button className="px-4 py-2 bg-blue-600 text-white text-sm font-semibold rounded-lg hover:bg-blue-700 transition">
-              Search
+            <button className="px-5 py-2 bg-blue-600 text-white text-sm font-bold rounded-lg hover:bg-blue-700 transition-colors flex items-center gap-2">
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+              </svg>
+              <span>Search</span>
             </button>
           </div>
         </div>
