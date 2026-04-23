@@ -70,19 +70,18 @@ import Hero from "@/components/Hero";
 import ListingsGrid from "@/components/ListingsGrid";
 import Footer from "@/components/Footer";
 
-export default function HomePage() {
+export default async function HomePage({ searchParams }) {
+  const params = await searchParams;
+  
   return (
     <div className="flex flex-col min-h-screen bg-gray-50">
       {/* Navigation */}
-      <Navigation />
+      <Navigation searchParams={params} />
 
       {/* Main Content */}
       <main className="flex-1">
-        {/* Hero Section */}
-        {/* <Hero /> */}
-
         {/* Listings Grid */}
-        <ListingsGrid />
+        <ListingsGrid searchParams={params} />
       </main>
 
       {/* Footer */}
