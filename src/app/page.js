@@ -66,7 +66,7 @@
 
 
 import Navigation from "@/components/Navigation";
-// import Hero from "@/components/Hero";
+import Hero from "@/components/Hero";
 import ListingsGrid from "@/components/ListingsGrid";
 import Footer from "@/components/Footer";
 
@@ -79,7 +79,7 @@ export default function HomePage() {
       {/* Main Content */}
       <main className="flex-1">
         {/* Hero Section */}
-        {/* <Hero /> */}
+        <Hero />
 
         {/* Listings Grid */}
         <ListingsGrid />

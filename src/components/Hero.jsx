@@ -9,19 +9,6 @@ export default function Hero() {
           Join our community marketplace and start trading today
         </p>
 
-        {/* Search Box */}
-        <div className="flex flex-col gap-4 mb-6">
-          <div className="flex gap-2">
-            <input
-              type="text"
-              placeholder="Search listings..."
-              className="flex-1 px-4 py-3 rounded-lg text-black focus:outline-none focus:ring-2 focus:ring-blue-300"
-            />
-            <button className="px-6 py-3 bg-white text-blue-700 font-semibold rounded-lg hover:bg-blue-50 transition">
-              Search
-            </button>
-          </div>
-
           {/* Filters */}
           <div className="flex flex-wrap gap-2 justify-center">
             <select className="px-4 py-2 rounded-lg text-black focus:outline-none focus:ring-2 focus:ring-blue-300">
@@ -49,9 +36,8 @@ export default function Hero() {
               <option>50€ - 200€</option>
               <option>200€+</option>
             </select>
-          </div>
-        </div>
       </div>
-    </section>
+    </div>
+  </section>
   );
 }

@@ -9,6 +9,20 @@ export default function Navigation() {
           <span className="text-2xl font-bold text-blue-600">Bazio</span>
         </Link>
 
+        {/* Search Box */}
+        <div className="flex-1 max-w-md mx-8">
+          <div className="flex gap-2">
+            <input
+              type="text"
+              placeholder="Search listings..."
+              className="w-full px-4 py-2 rounded-lg bg-gray-100 border-transparent focus:bg-white focus:ring-2 focus:ring-blue-300 text-sm focus:outline-none transition-all"
+            />
+            <button className="px-4 py-2 bg-blue-600 text-white text-sm font-semibold rounded-lg hover:bg-blue-700 transition">
+              Search
+            </button>
+          </div>
+        </div>
+
         {/* Nav Links */}
         <div className="flex items-center gap-6">
           <Link href="/" className="text-gray-700 hover:text-blue-600 transition font-medium">
