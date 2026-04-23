@@ -79,7 +79,7 @@ export default function HomePage() {
       {/* Main Content */}
       <main className="flex-1">
         {/* Hero Section */}
-        <Hero />
+        {/* <Hero /> */}
 
         {/* Listings Grid */}
         <ListingsGrid />
