@@ -34,3 +34,9 @@ export const createConnection = async () => {
     throw err;
   }
 };
+
+// put this in .env
+// DATABASE_HOST="localhost"
+// DATABASE_USER="root"
+// DATABASE_PASSWORD=""
+// DATABASE_NAME="bazio"
