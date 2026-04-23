@@ -1,0 +1,55 @@
+.listings-section {
+  width: 100%;
+  padding: 48px 16px;
+}
+
+.listings-container {
+  max-width: 1152px;
+  margin: 0 auto;
+}
+
+.listings-title {
+  font-size: 30px;
+  font-weight: bold;
+  margin-bottom: 32px;
+  color: #1f2937;
+}
+
+.listings-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 24px;
+  margin-bottom: 32px;
+}
+
+@media (min-width: 640px) {
+  .listings-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  .listings-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.listings-load-more {
+  display: flex;
+  justify-content: center;
+}
+
+.load-more-btn {
+  padding: 12px 32px;
+  background-color: #2563eb;
+  color: white;
+  font-weight: 600;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.load-more-btn:hover {
+  background-color: #1d4ed8;
+}
