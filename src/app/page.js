@@ -66,7 +66,6 @@
 
 
 import Navigation from "@/components/Navigation";
-import Hero from "@/components/Hero";
 import ListingsGrid from "@/components/ListingsGrid";
 import Footer from "@/components/Footer";
 

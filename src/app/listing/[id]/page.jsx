@@ -100,13 +100,6 @@ async function ListingDetail({ params }) {
               <div className="price-value">
                 {listing.price ? `${listing.price}€` : "Free"}
               </div>
-              
-              <button className="contact-button">
-                Contact Seller
-              </button>
-              <button className="save-button">
-                ⭐ Save to Watchlist
-              </button>
             </div>
 
             <div className="seller-card">
