@@ -50,12 +50,23 @@ const mockListings = [
 
 export default async function ListingsGrid({ listings, searchParams }) {
   let rows = [];
+  let userName = "";
   const query = searchParams?.q || "";
   const categoryId = searchParams?.category || "";
   const location = searchParams?.location || "";
+  const userId = searchParams?.user_id || "";
+
+  const price = searchParams?.price || "";
 
   try {
     const connection = await createConnection();
+
+    if (userId) {
+      const [userResult] = await connection.execute("SELECT full_name FROM users WHERE id = ?", [userId]);
+      if (userResult.length > 0) {
+        userName = userResult[0].full_name;
+      }
+    }
 
     let sql = `
       SELECT 
@@ -85,6 +96,16 @@ export default async function ListingsGrid({ listings, searchParams }) {
       params.push(location);
     }
 
+    if (price) {
+      sql += " AND listings.price <= ?";
+      params.push(price);
+    }
+
+    if (userId) {
+      sql += " AND listings.user_id = ?";
+      params.push(userId);
+    }
+
     sql += " ORDER BY listings.id DESC LIMIT 12";
 
     const [result] = await connection.execute(sql, params);
@@ -104,12 +125,13 @@ export default async function ListingsGrid({ listings, searchParams }) {
       const matchesQuery = !query || item.title.toLowerCase().includes(query.toLowerCase());
       const matchesCategory = !categoryId || item.category === categoryMap[categoryId] || item.category === categoryId;
       const matchesLocation = !location || item.location === location;
-      return matchesQuery && matchesCategory && matchesLocation;
+      const matchesUserId = !userId || item.user_id == userId;
+      return matchesQuery && matchesCategory && matchesLocation && matchesUserId;
     });
   }
 
   const displayListings = listings || rows;
-  const searchTitle = query ? `Results for "${query}"` : (categoryId || location ? "Filtered Listings" : "Recent Listings");
+  const searchTitle = query ? `Results for ${query}` : (userId ? `Results for user ${userName || userId}` : (categoryId || location ? "Filtered Listings" : "Recent Listings"));
 
   return (
     <section className="listings-section">

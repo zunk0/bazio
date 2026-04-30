@@ -10,15 +10,18 @@ async function ListingDetail({ params }) {
 
   try {
     const connection = await createConnection();
-    
+
     // We try to fetch all common fields. If some don't exist, this might fail, 
     // in which case we'll fallback to a safer query or mock data.
     const [result] = await connection.execute(`
       SELECT 
-        listings.*, 
-        categories.name AS category_name 
+        listings.*,
+        categories.name AS category_name,
+        users.full_name,
+        users.created_at AS user_created_at
       FROM listings 
       LEFT JOIN categories ON listings.category_id = categories.id 
+      LEFT JOIN users ON listings.user_id = users.id
       WHERE listings.id = ?
     `, [id]);
 
@@ -38,26 +41,27 @@ async function ListingDetail({ params }) {
       price: 150,
       location: "Bratislava",
       category_name: "Sports",
-      description: "This is a high-quality mountain bike in excellent condition. Perfect for trails and city commuting alike. Recently serviced with new brake pads and tires.\n\nFeatures:\n- Aluminum frame\n- 21 speeds\n- Front suspension\n- Disc brakes",
+      content: "This is a high-quality mountain bike in excellent condition. Perfect for trails and city commuting alike. Recently serviced with new brake pads and tires.\n\nFeatures:\n- Aluminum frame\n- 21 speeds\n- Front suspension\n- Disc brakes",
       image: `https://picsum.photos/seed/${id}/800/450`,
       created_at: new Date().toISOString(),
-      user_name: "Peter Black"
+      full_name: "Peter Black",
+      user_created_at: new Date().toISOString()
     };
   }
 
   return (
     <div className="listing-detail-page">
       <Navigation />
-      
+
       <main className="listing-detail-container">
         <div className="listing-detail-grid">
           {/* Left Column: Main Details */}
           <div className="listing-main-content">
             <div className="listing-image-container">
               {listing.image || listing.image_url ? (
-                <img 
-                  src={listing.image || listing.image_url} 
-                  alt={listing.title} 
+                <img
+                  src={listing.image || listing.image_url}
+                  alt={listing.title}
                   className="listing-image"
                 />
               ) : (
@@ -67,7 +71,7 @@ async function ListingDetail({ params }) {
                 </div>
               )}
             </div>
-            
+
             <div className="listing-info-section">
               <div className="listing-header">
                 <span className="listing-category-badge">
@@ -87,7 +91,7 @@ async function ListingDetail({ params }) {
               <div className="listing-description-section">
                 <h2 className="section-title">Description</h2>
                 <div className="listing-description">
-                  {listing.description || "No description provided for this listing."}
+                  {listing.content || "No description provided for this listing."}
                 </div>
               </div>
             </div>
@@ -108,14 +112,14 @@ async function ListingDetail({ params }) {
               </h2>
               <div className="seller-header">
                 <div className="seller-avatar">
-                  {(listing.user_name || "U")[0]}
+                  {(listing.full_name || "U")[0]}
                 </div>
                 <div className="seller-info">
-                  <h4>{listing.user_name || "Private User"}</h4>
-                  <p>Member since 2024</p>
+                  <h4>{listing.full_name || "Private User"}</h4>
+                  <p>Member since {listing.user_created_at ? new Date(listing.user_created_at).getFullYear() : "2024"}</p>
                 </div>
               </div>
-              <a href="#" className="view-profile-link">
+              <a href={`/?user_id=${listing.user_id}`} className="view-profile-link">
                 View Seller's Other Listings
               </a>
             </div>
