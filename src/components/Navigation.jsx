@@ -104,7 +104,7 @@ export default function Navigation({ searchParams }) {
           <Link href="/" className="text-gray-700 hover:text-blue-600 transition font-medium">
             Browse
           </Link>
-          <Link href="/profile" className="text-gray-700 hover:text-blue-600 transition font-medium">
+          <Link href="/login" className="text-gray-700 hover:text-blue-600 transition font-medium">
             Profile
           </Link>
           <Link
