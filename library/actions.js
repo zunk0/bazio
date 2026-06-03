@@ -3,7 +3,7 @@
 import bcrypt from 'bcrypt';
 import { createConnection } from './db';
 import { createSession, deleteSession } from './auth';
-import { writeFile } from 'fs/promises';
+import { writeFile, mkdir } from 'fs/promises';
 import path from 'path';
 import { redirect } from 'next/navigation';
 import { cookies } from 'next/headers';
@@ -14,7 +14,9 @@ export async function saveUploadedImage(image) {
   const buffer = Buffer.from(bytes);
   const ext = path.extname(image.name) || '.jpg';
   const filename = `${Date.now()}-${Math.random().toString(36).slice(2)}${ext}`;
-  const uploadPath = path.join(process.cwd(), 'public', 'uploads', filename);
+  const uploadDir = path.join(process.cwd(), 'public', 'uploads');
+  const uploadPath = path.join(uploadDir, filename);
+  await mkdir(uploadDir, { recursive: true });
   await writeFile(uploadPath, buffer);
   return `/uploads/${filename}`;
 }

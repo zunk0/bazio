@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hostiteľ: localhost
--- Čas generovania: Št 23.Apr 2026, 10:54
+-- Čas generovania: St 03.Jún 2026, 18:31
 -- Verzia serveru: 10.4.28-MariaDB
 -- Verzia PHP: 8.2.4
 
@@ -60,16 +60,9 @@ CREATE TABLE `listings` (
   `location` varchar(100) DEFAULT NULL,
   `views` int(11) DEFAULT 0,
   `created_at` datetime DEFAULT current_timestamp(),
-  `updated_at` datetime DEFAULT current_timestamp() ON UPDATE current_timestamp()
+  `updated_at` datetime DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  `status` tinyint(1) NOT NULL DEFAULT 1
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Sťahujem dáta pre tabuľku `listings`
---
-
-INSERT INTO `listings` (`id`, `user_id`, `category_id`, `title`, `content`, `price`, `location`, `views`, `created_at`, `updated_at`) VALUES
-(5, 1, 1, 'iPhone 13', 'Pekný stav', 500.00, 'Bratislava', 0, '2026-04-16 10:46:31', '2026-04-16 10:46:31'),
-(6, 1, 1, 'PC', 'toto je super pc', 10000.00, 'Don\'t exists', 0, '2026-04-22 19:03:18', '2026-04-22 19:03:18');
 
 -- --------------------------------------------------------
 
@@ -98,13 +91,6 @@ CREATE TABLE `users` (
   `location` varchar(100) DEFAULT NULL,
   `created_at` datetime DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Sťahujem dáta pre tabuľku `users`
---
-
-INSERT INTO `users` (`id`, `email`, `password_hash`, `full_name`, `phone`, `location`, `created_at`) VALUES
-(1, 'test@test.com', 'hashedpassword', 'John Doe', '123456789', 'Bratislava', '2026-04-16 10:44:34');
 
 --
 -- Kľúče pre exportované tabuľky
@@ -152,19 +138,19 @@ ALTER TABLE `categories`
 -- AUTO_INCREMENT pre tabuľku `listings`
 --
 ALTER TABLE `listings`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
 
 --
 -- AUTO_INCREMENT pre tabuľku `listing_images`
 --
 ALTER TABLE `listing_images`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT pre tabuľku `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- Obmedzenie pre exportované tabuľky
