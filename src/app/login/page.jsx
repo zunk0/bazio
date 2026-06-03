@@ -1,12 +1,14 @@
 'use client';
 
-import { useActionState } from 'react';
+import { useActionState, Suspense } from 'react';
 import { login } from '../../../library/actions';
 import Link from 'next/link';
+import { useSearchParams } from 'next/navigation';
 
-export default function Login() {
+function LoginForm() {
   const [state, formAction, isPending] = useActionState(login, null);
-
+  const searchParams = useSearchParams();
+  const callbackUrl = searchParams.get('callbackUrl') || '/profile';
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
       <div className="sm:mx-auto sm:w-full sm:max-w-md">
@@ -21,6 +23,7 @@ export default function Login() {
                 <p className="text-sm text-red-700">{state.error}</p>
               </div>
             )}
+            <input type="hidden" name="callbackUrl" value={callbackUrl} />
             <div>
               <label className="block text-sm font-medium text-gray-700">Email address</label>
               <div className="mt-1">
@@ -60,5 +63,17 @@ export default function Login() {
         </div>
       </div>
     </div>
+  );
+}
+
+export default function Login() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen bg-gray-50 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
+        <div className="sm:mx-auto sm:w-full sm:max-w-md text-center">Loading...</div>
+      </div>
+    }>
+      <LoginForm />
+    </Suspense>
   );
 }

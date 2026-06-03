@@ -1,24 +1,35 @@
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 import { createConnection } from "@/../library/db";
+import { getSession } from "@/../library/auth";
+import { formatImageUrl } from "@/../library/utils";
+import { deleteListing, toggleListingStatus } from "@/../library/actions";
+import DeleteButton from "./DeleteButton";
+import Link from "next/link";
+import DbError from "@/components/DbError";
+import ViewCounter from "./ViewCounter";
+import ListingImage from "@/components/ListingImage";
 import "./ListingDetail.css";
 
-async function ListingDetail({ params }) {
+async function ListingDetail({ params, searchParams }) {
   const { id } = await params;
+  const resolvedSearchParams = await searchParams;
+  const fromMyListings = resolvedSearchParams?.from === 'mylistings';
+  const session = await getSession();
   let listing = null;
   let error = null;
 
   try {
     const connection = await createConnection();
 
-    // We try to fetch all common fields. If some don't exist, this might fail, 
-    // in which case we'll fallback to a safer query or mock data.
     const [result] = await connection.execute(`
       SELECT 
         listings.*,
         categories.name AS category_name,
         users.full_name,
-        users.created_at AS user_created_at
+        users.phone,
+        users.created_at AS user_created_at,
+        (SELECT url FROM listing_images WHERE listing_id = listings.id LIMIT 1) AS image_url
       FROM listings 
       LEFT JOIN categories ON listings.category_id = categories.id 
       LEFT JOIN users ON listings.user_id = users.id
@@ -30,46 +41,49 @@ async function ListingDetail({ params }) {
     }
   } catch (err) {
     console.error("Error fetching listing:", err);
-    error = err.message;
+    return (
+      <div className="listing-detail-page">
+        <Navigation isLoggedIn={!!session} />
+        <DbError />
+        <Footer />
+      </div>
+    );
   }
 
-  // Mock data for demonstration if DB fails or listing not found
   if (!listing) {
-    listing = {
-      id: id,
-      title: "Premium Mountain Bicycle",
-      price: 150,
-      location: "Bratislava",
-      category_name: "Sports",
-      content: "This is a high-quality mountain bike in excellent condition. Perfect for trails and city commuting alike. Recently serviced with new brake pads and tires.\n\nFeatures:\n- Aluminum frame\n- 21 speeds\n- Front suspension\n- Disc brakes",
-      image: `https://picsum.photos/seed/${id}/800/450`,
-      created_at: new Date().toISOString(),
-      full_name: "Peter Black",
-      user_created_at: new Date().toISOString()
-    };
+    return (
+      <div className="listing-detail-page">
+        <Navigation isLoggedIn={!!session} />
+        <main className="listing-detail-container flex items-center justify-center min-h-[50vh]">
+          <div className="text-center">
+            <h1 className="text-2xl font-bold text-gray-700">Listing not found</h1>
+            <p className="text-gray-500 mt-2">The listing you are looking for does not exist or has been removed.</p>
+            <Link href="/" className="mt-4 inline-block text-blue-600 hover:underline">
+              Return to Home
+            </Link>
+          </div>
+        </main>
+        <Footer />
+      </div>
+    );
   }
 
   return (
     <div className="listing-detail-page">
-      <Navigation />
+      <ViewCounter id={id} />
+      <Navigation isLoggedIn={!!session} />
 
       <main className="listing-detail-container">
         <div className="listing-detail-grid">
           {/* Left Column: Main Details */}
           <div className="listing-main-content">
             <div className="listing-image-container">
-              {listing.image || listing.image_url ? (
-                <img
-                  src={listing.image || listing.image_url}
-                  alt={listing.title}
-                  className="listing-image"
-                />
-              ) : (
-                <div className="listing-no-image">
-                  <span style={{ fontSize: '48px' }}>📸</span>
-                  <p>No image available</p>
-                </div>
-              )}
+              <ListingImage
+                src={formatImageUrl(listing.image_url || listing.image)}
+                alt={listing.title}
+                imgClassName="listing-image"
+                noImageClassName="listing-no-image"
+              />
             </div>
 
             <div className="listing-info-section">
@@ -84,6 +98,9 @@ async function ListingDetail({ params }) {
                   </div>
                   <div className="listing-meta-item">
                     <span>📅</span> Added {new Date(listing.created_at).toLocaleDateString()}
+                  </div>
+                  <div className="listing-meta-item">
+                    <span>👁️</span> {listing.views ?? 0} views
                   </div>
                 </div>
               </div>
@@ -123,6 +140,42 @@ async function ListingDetail({ params }) {
                 View Seller's Other Listings
               </a>
             </div>
+
+            {listing.phone && (
+              <div className="contact-info-card">
+                <h3>📞 Contact Seller</h3>
+                <a href={`tel:${listing.phone}`} className="contact-phone-number">
+                  {listing.phone}
+                </a>
+              </div>
+            )}
+
+            {session && session.userId === listing.user_id && fromMyListings && (
+              <div className="admin-actions-card">
+                <h2 className="section-title" style={{ fontSize: '18px', marginBottom: '16px' }}>
+                  Admin Actions
+                </h2>
+                <div className="admin-actions-list">
+                  <Link href={`/mylistings/edit/${listing.id}`} className="admin-action-btn admin-edit-btn">
+                    ✎ Edit Listing
+                  </Link>
+                  <form action={async () => {
+                    "use server";
+                    await toggleListingStatus(listing.id);
+                  }}>
+                    <button type="submit" className={`admin-action-btn ${listing.status === 0 ? 'admin-reactivate-btn' : 'admin-deactivate-btn'}`}>
+                      {listing.status === 0 ? "👁 Reactivate Listing" : "🚫 Deactivate Listing"}
+                    </button>
+                  </form>
+                  <form action={async () => {
+                    "use server";
+                    await deleteListing(listing.id);
+                  }}>
+                    <DeleteButton id={listing.id} />
+                  </form>
+                </div>
+              </div>
+            )}
           </div>
         </div>
       </main>

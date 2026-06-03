@@ -1,53 +1,9 @@
 import ListingCard from "./ListingCard";
 import { createConnection } from "../../library/db";
+import { formatImageUrl } from "../../library/utils";
 import "./ListingsGrid.css";
 
-const mockListings = [
-  {
-    id: 1,
-    title: "iPhone 13 Pro",
-    location: "Bratislava",
-    category: "Elektronika",
-    price: 500,
-  },
-  {
-    id: 2,
-    title: "Škoda Octavia",
-    location: "Bratislava",
-    category: "Auto",
-    price: 12000,
-  },
-  {
-    id: 3,
-    title: "2-izbový byt v centre",
-    location: "Košice",
-    category: "Reality",
-    price: 159000,
-  },
-  {
-    id: 4,
-    title: "Zimná bunda",
-    location: "Žilina",
-    category: "Oblečenie",
-    price: 45,
-  },
-  {
-    id: 5,
-    title: "Herný notebook",
-    location: "Nitra",
-    category: "Elektronika",
-    price: 850,
-  },
-  {
-    id: 6,
-    title: "Horský bicykel",
-    location: "Banská Bystrica",
-    category: "Iné",
-    price: 320,
-  },
-];
-
-
+import DbError from "./DbError";
 export default async function ListingsGrid({ listings, searchParams }) {
   let rows = [];
   let userName = "";
@@ -74,10 +30,11 @@ export default async function ListingsGrid({ listings, searchParams }) {
         listings.title,
         listings.location,
         listings.price,
-        categories.name AS category
+        categories.name AS category,
+        (SELECT url FROM listing_images WHERE listing_id = listings.id LIMIT 1) AS image_url
       FROM listings
-      JOIN categories ON listings.category_id = categories.id
-      WHERE 1=1
+      LEFT JOIN categories ON listings.category_id = categories.id
+      WHERE 1=1 AND listings.status = 1
     `;
     const params = [];
 
@@ -111,23 +68,8 @@ export default async function ListingsGrid({ listings, searchParams }) {
     const [result] = await connection.execute(sql, params);
     rows = result;
   } catch (error) {
-    console.log("DB error or no connection, using filtered mock data");
-    
-    // Map of category ID to name for mock filtering
-    const categoryMap = {
-      "1": "Elektronika",
-      "2": "Auto",
-      "3": "Reality",
-      "4": "Oblečenie"
-    };
-
-    rows = mockListings.filter(item => {
-      const matchesQuery = !query || item.title.toLowerCase().includes(query.toLowerCase());
-      const matchesCategory = !categoryId || item.category === categoryMap[categoryId] || item.category === categoryId;
-      const matchesLocation = !location || item.location === location;
-      const matchesUserId = !userId || item.user_id == userId;
-      return matchesQuery && matchesCategory && matchesLocation && matchesUserId;
-    });
+    console.error("DB error or no connection:", error);
+    return <DbError />;
   }
 
   const displayListings = listings || rows;
@@ -146,8 +88,9 @@ export default async function ListingsGrid({ listings, searchParams }) {
                 id={listing.id}
                 title={listing.title}
                 location={listing.location}
-                category={listing.category}
+                category={listing.category ?? "None"}
                 price={listing.price}
+                image={formatImageUrl(listing.image_url)}
               />
             ))}
           </div>

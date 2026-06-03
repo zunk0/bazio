@@ -1,5 +1,6 @@
 import Link from "next/link";
 import "./ListingCard.css";
+import ListingImage from "./ListingImage";
 
 export default function ListingCard({ id, title, location, category, price, image }) {
   return (
@@ -7,17 +8,12 @@ export default function ListingCard({ id, title, location, category, price, imag
       <div className="card">
         {/* Image Container */}
         <div className="card-image-container">
-          {image ? (
-            <img
-              src={image}
-              alt={title}
-              className="card-image"
-            />
-          ) : (
-            <div className="card-no-image">
-              No Image
-            </div>
-          )}
+          <ListingImage
+            src={image}
+            alt={title}
+            imgClassName="card-image"
+            noImageClassName="card-no-image"
+          />
         </div>
 
         {/* Content */}

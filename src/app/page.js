@@ -68,14 +68,16 @@
 import Navigation from "@/components/Navigation";
 import ListingsGrid from "@/components/ListingsGrid";
 import Footer from "@/components/Footer";
+import { getSession } from "@/../library/auth";
 
 export default async function HomePage({ searchParams }) {
   const params = await searchParams;
+  const session = await getSession();
   
   return (
     <div className="flex flex-col min-h-screen bg-gray-50">
       {/* Navigation */}
-      <Navigation searchParams={params} />
+      <Navigation searchParams={params} isLoggedIn={!!session} />
 
       {/* Main Content */}
       <main className="flex-1">

@@ -2,21 +2,37 @@ import { getSession } from '../../../library/auth';
 import { redirect } from 'next/navigation';
 import { createConnection } from '../../../library/db';
 import { logout } from '../../../library/actions';
+import DbError from '@/components/DbError';
+import Navigation from '@/components/Navigation';
+import Footer from '@/components/Footer';
 
 export default async function Profile() {
   const session = await getSession();
 
   if (!session) {
-    redirect('/login');
+    redirect('/login?callbackUrl=/profile');
   }
 
-  const db = await createConnection();
-  const [rows] = await db.execute('SELECT full_name, created_at, email, location FROM users WHERE id = ?', [session.userId]);
-  const user = rows[0];
+  let user = null;
+  
+  try {
+    const db = await createConnection();
+    const [rows] = await db.execute('SELECT full_name, created_at, email, location FROM users WHERE id = ?', [session.userId]);
+    user = rows[0];
+  } catch (err) {
+    console.error('Error fetching user profile:', err);
+    return (
+      <div className="bg-gray-50 min-h-screen">
+        <Navigation isLoggedIn={false} />
+        <DbError />
+        <Footer />
+      </div>
+    );
+  }
 
   if (!user) {
     // Session is valid but user deleted? Clear session.
-    redirect('/login');
+    redirect('/login?callbackUrl=/profile');
   }
 
   const joinDate = new Date(user.created_at).toLocaleDateString('en-US', {
@@ -26,8 +42,10 @@ export default async function Profile() {
   });
 
   return (
-    <div className="max-w-4xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
-      <div className="bg-white shadow overflow-hidden sm:rounded-lg border border-gray-200">
+    <div className="bg-gray-50 min-h-screen flex flex-col">
+      <Navigation isLoggedIn={true} />
+      <div className="max-w-4xl w-full mx-auto py-12 px-4 sm:px-6 lg:px-8 flex-grow">
+        <div className="bg-white shadow overflow-hidden sm:rounded-lg border border-gray-200">
         <div className="px-4 py-5 sm:px-6 flex justify-between items-center bg-gray-50">
           <div>
             <h3 className="text-lg leading-6 font-medium text-gray-900">User Profile</h3>
@@ -62,6 +80,8 @@ export default async function Profile() {
           </dl>
         </div>
       </div>
+      </div>
+      <Footer />
     </div>
   );
 }

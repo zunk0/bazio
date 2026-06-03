@@ -1,0 +1,138 @@
+'use client';
+
+import { useActionState, useState } from 'react';
+import { updateListing, deleteListing, toggleListingStatus } from '../../../../../library/actions';
+import Link from 'next/link';
+import '../../add/addlisting.css';
+
+export default function EditListingForm({ listing }) {
+  const [state, formAction, isPending] = useActionState(updateListing, null);
+  const [preview, setPreview] = useState(listing.image_url || null);
+
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setPreview(URL.createObjectURL(file));
+    } else {
+      setPreview(listing.image_url || null);
+    }
+  };
+
+  return (
+    <div className="add-listing-form-card">
+      {state?.error && (
+        <div className="form-error">{state.error}</div>
+      )}
+      {state?.success && (
+        <div className="form-success">{state.success}</div>
+      )}
+
+      <form action={formAction}>
+        {/* Hidden ID */}
+        <input type="hidden" name="id" value={listing.id} />
+
+        {/* Title */}
+        <div className="form-group">
+          <label>
+            Title <span className="required">*</span>
+          </label>
+          <input
+            type="text"
+            name="title"
+            defaultValue={listing.title}
+            className="form-input"
+            placeholder="e.g. iPhone 15 Pro Max"
+            required
+          />
+        </div>
+
+        {/* Description */}
+        <div className="form-group">
+          <label>Description</label>
+          <textarea
+            name="content"
+            defaultValue={listing.content || ''}
+            className="form-input"
+            placeholder="Describe your item in detail..."
+          />
+        </div>
+
+        {/* Image Upload */}
+        <div className="form-group">
+          <label>Photo</label>
+          <label className="image-upload-zone" htmlFor="image-upload">
+            {preview ? (
+              <img src={preview} alt="Preview" className="image-upload-preview" />
+            ) : (
+              <div className="image-upload-placeholder">
+                <span className="image-upload-icon">📷</span>
+                <span className="image-upload-text">Click to upload an image</span>
+                <span className="image-upload-hint">JPG, PNG, WEBP up to 10MB</span>
+              </div>
+            )}
+            <input
+              id="image-upload"
+              type="file"
+              name="image"
+              accept="image/*"
+              className="image-upload-input"
+              onChange={handleImageChange}
+            />
+          </label>
+          <p className="image-upload-note">Leave empty to keep current image.</p>
+        </div>
+
+        {/* Price & Category */}
+        <div className="form-row">
+          <div className="form-group">
+            <label>
+              Price (€) <span className="required">*</span>
+            </label>
+            <input
+              type="number"
+              name="price"
+              defaultValue={listing.price}
+              className="form-input"
+              placeholder="0.00"
+              step="0.01"
+              min="0"
+              required
+            />
+          </div>
+
+          <div className="form-group">
+            <label>Category</label>
+            <select name="category_id" defaultValue={listing.category_id || ''} className="form-input">
+              <option value="">Select a category</option>
+              <option value="1">Elektronika</option>
+              <option value="2">Auto</option>
+              <option value="3">Reality</option>
+              <option value="4">Oblečenie</option>
+            </select>
+          </div>
+        </div>
+
+        {/* Location */}
+        <div className="form-group">
+          <label>Location</label>
+          <input
+            type="text"
+            name="location"
+            defaultValue={listing.location || ''}
+            className="form-input"
+            placeholder="e.g. Bratislava"
+          />
+        </div>
+
+        <button
+          type="submit"
+          disabled={isPending}
+          className="form-submit-btn"
+        >
+          {isPending ? 'Saving Changes...' : 'Save Changes'}
+        </button>
+      </form>
+
+    </div>
+  );
+}
