@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { logout } from "../../library/actions";
 
-export default function Navigation({ searchParams, isLoggedIn }) {
+export default function Navigation({ searchParams, isLoggedIn, categories = [] }) {
   const router = useRouter();
   const query = searchParams?.q || "";
   const categoryId = searchParams?.category || "";
@@ -56,10 +56,11 @@ export default function Navigation({ searchParams, isLoggedIn }) {
               className="shrink-0 w-[120px] bg-transparent text-gray-600 text-xs font-semibold px-3 py-2 outline-none border-r border-gray-200 cursor-pointer hover:bg-gray-100 transition"
             >
               <option value="">All Categories</option>
-              <option value="1">Elektronika</option>
-              <option value="2">Auto</option>
-              <option value="3">Reality</option>
-              <option value="4">Oblečenie</option>
+              {categories.map((cat) => (
+                <option key={cat.id} value={cat.id}>
+                  {cat.name}
+                </option>
+              ))}
             </select>
             
             <select 

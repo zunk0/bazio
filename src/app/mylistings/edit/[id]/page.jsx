@@ -1,5 +1,5 @@
 import { getSession } from '../../../../../library/auth';
-import { createConnection } from '../../../../../library/db';
+import { createConnection, getCategories } from '../../../../../library/db';
 import { redirect } from 'next/navigation';
 import Navigation from '@/components/Navigation';
 import Footer from '@/components/Footer';
@@ -14,6 +14,7 @@ export default async function EditListing({ params }) {
   }
 
   let listing = null;
+  let categories = [];
 
   try {
     const db = await createConnection();
@@ -30,11 +31,12 @@ export default async function EditListing({ params }) {
     }
 
     listing = rows[0];
+    categories = await getCategories();
   } catch (err) {
     console.error('Error fetching listing for edit:', err);
     return (
       <div className="add-listing-page">
-        <Navigation isLoggedIn={false} />
+        <Navigation isLoggedIn={false} categories={categories} />
         <DbError />
         <Footer />
       </div>
@@ -43,7 +45,7 @@ export default async function EditListing({ params }) {
 
   return (
     <div className="add-listing-page">
-      <Navigation isLoggedIn={true} />
+      <Navigation isLoggedIn={true} categories={categories} />
 
       <main className="add-listing-container">
         <a href="/mylistings" className="add-listing-back">
@@ -55,7 +57,7 @@ export default async function EditListing({ params }) {
           Update the details of your listing.
         </p>
 
-        <EditListingForm listing={listing} />
+        <EditListingForm listing={listing} categories={categories} />
       </main>
 
       <Footer />

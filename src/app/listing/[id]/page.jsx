@@ -1,6 +1,6 @@
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
-import { createConnection } from "@/../library/db";
+import { createConnection, getCategories } from "@/../library/db";
 import { getSession } from "@/../library/auth";
 import { formatImageUrl } from "@/../library/utils";
 import { deleteListing, toggleListingStatus } from "@/../library/actions";
@@ -17,6 +17,7 @@ async function ListingDetail({ params, searchParams }) {
   const fromMyListings = resolvedSearchParams?.from === 'mylistings';
   const session = await getSession();
   let listing = null;
+  let categories = [];
   let error = null;
 
   try {
@@ -39,11 +40,12 @@ async function ListingDetail({ params, searchParams }) {
     if (result && result.length > 0) {
       listing = result[0];
     }
+    categories = await getCategories();
   } catch (err) {
     console.error("Error fetching listing:", err);
     return (
       <div className="listing-detail-page">
-        <Navigation isLoggedIn={!!session} />
+        <Navigation isLoggedIn={!!session} categories={categories} />
         <DbError />
         <Footer />
       </div>
@@ -53,7 +55,7 @@ async function ListingDetail({ params, searchParams }) {
   if (!listing) {
     return (
       <div className="listing-detail-page">
-        <Navigation isLoggedIn={!!session} />
+        <Navigation isLoggedIn={!!session} categories={categories} />
         <main className="listing-detail-container flex items-center justify-center min-h-[50vh]">
           <div className="text-center">
             <h1 className="text-2xl font-bold text-gray-700">Listing not found</h1>
@@ -71,7 +73,7 @@ async function ListingDetail({ params, searchParams }) {
   return (
     <div className="listing-detail-page">
       <ViewCounter id={id} />
-      <Navigation isLoggedIn={!!session} />
+      <Navigation isLoggedIn={!!session} categories={categories} />
 
       <main className="listing-detail-container">
         <div className="listing-detail-grid">

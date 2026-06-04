@@ -5,7 +5,7 @@ import { updateListing, deleteListing, toggleListingStatus } from '../../../../.
 import Link from 'next/link';
 import '../../add/addlisting.css';
 
-export default function EditListingForm({ listing }) {
+export default function EditListingForm({ listing, categories = [] }) {
   const [state, formAction, isPending] = useActionState(updateListing, null);
   const [preview, setPreview] = useState(listing.image_url || null);
 
@@ -104,10 +104,11 @@ export default function EditListingForm({ listing }) {
             <label>Category</label>
             <select name="category_id" defaultValue={listing.category_id || ''} className="form-input">
               <option value="">Select a category</option>
-              <option value="1">Elektronika</option>
-              <option value="2">Auto</option>
-              <option value="3">Reality</option>
-              <option value="4">Oblečenie</option>
+              {categories.map((cat) => (
+                <option key={cat.id} value={cat.id}>
+                  {cat.name}
+                </option>
+              ))}
             </select>
           </div>
         </div>

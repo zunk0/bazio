@@ -40,3 +40,14 @@ export const createConnection = async () => {
 // DATABASE_USER="root"
 // DATABASE_PASSWORD=""
 // DATABASE_NAME="bazio"
+
+export async function getCategories() {
+  try {
+    const db = await createConnection();
+    const [rows] = await db.execute('SELECT id, name FROM categories ORDER BY name ASC');
+    return rows;
+  } catch (error) {
+    console.error('Failed to fetch categories:', error);
+    return [];
+  }
+}

@@ -1,6 +1,6 @@
 import { getSession } from '../../../library/auth';
 import { redirect } from 'next/navigation';
-import { createConnection } from '../../../library/db';
+import { createConnection, getCategories } from '../../../library/db';
 import { formatImageUrl } from '../../../library/utils';
 import Navigation from '@/components/Navigation';
 import Footer from '@/components/Footer';
@@ -16,6 +16,7 @@ async function MyListings() {
   }
 
   let listings = [];
+  let categories = [];
   let error = null;
 
   try {
@@ -33,11 +34,12 @@ async function MyListings() {
       [session.userId]
     );
     listings = rows;
+    categories = await getCategories();
   } catch (err) {
     console.error('Error fetching user listings:', err);
     return (
       <div className="mylistings-page">
-        <Navigation isLoggedIn={false} />
+        <Navigation isLoggedIn={false} categories={categories} />
         <DbError />
         <Footer />
       </div>
@@ -46,7 +48,7 @@ async function MyListings() {
 
   return (
     <div className="mylistings-page">
-      <Navigation isLoggedIn={true} />
+      <Navigation isLoggedIn={true} categories={categories} />
 
       <main className="mylistings-container">
         {/* Header */}

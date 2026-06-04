@@ -4,7 +4,7 @@ import { useActionState, useState } from 'react';
 import { createListing } from '../../../../library/actions';
 import './addlisting.css';
 
-export default function AddListingForm({ userLocation }) {
+export default function AddListingForm({ userLocation, categories = [] }) {
   const [state, formAction, isPending] = useActionState(createListing, null);
   const [preview, setPreview] = useState(null);
 
@@ -99,10 +99,11 @@ export default function AddListingForm({ userLocation }) {
             <label>Category</label>
             <select name="category_id" className="form-input">
               <option value="">Select a category</option>
-              <option value="1">Elektronika</option>
-              <option value="2">Auto</option>
-              <option value="3">Reality</option>
-              <option value="4">Oblečenie</option>
+              {categories.map((cat) => (
+                <option key={cat.id} value={cat.id}>
+                  {cat.name}
+                </option>
+              ))}
             </select>
           </div>
         </div>

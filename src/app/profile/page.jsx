@@ -1,6 +1,6 @@
 import { getSession } from '../../../library/auth';
 import { redirect } from 'next/navigation';
-import { createConnection } from '../../../library/db';
+import { createConnection, getCategories } from '../../../library/db';
 import { logout } from '../../../library/actions';
 import DbError from '@/components/DbError';
 import Navigation from '@/components/Navigation';
@@ -14,16 +14,18 @@ export default async function Profile() {
   }
 
   let user = null;
+  let categories = [];
   
   try {
     const db = await createConnection();
     const [rows] = await db.execute('SELECT full_name, created_at, email, location FROM users WHERE id = ?', [session.userId]);
     user = rows[0];
+    categories = await getCategories();
   } catch (err) {
     console.error('Error fetching user profile:', err);
     return (
       <div className="bg-gray-50 min-h-screen">
-        <Navigation isLoggedIn={false} />
+        <Navigation isLoggedIn={false} categories={categories} />
         <DbError />
         <Footer />
       </div>
@@ -43,7 +45,7 @@ export default async function Profile() {
 
   return (
     <div className="bg-gray-50 min-h-screen flex flex-col">
-      <Navigation isLoggedIn={true} />
+      <Navigation isLoggedIn={true} categories={categories} />
       <div className="max-w-4xl w-full mx-auto py-12 px-4 sm:px-6 lg:px-8 flex-grow">
         <div className="bg-white shadow overflow-hidden sm:rounded-lg border border-gray-200">
         <div className="px-4 py-5 sm:px-6 flex justify-between items-center bg-gray-50">
