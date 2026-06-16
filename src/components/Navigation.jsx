@@ -2,7 +2,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { logout } from "../../library/actions";
 
 export default function Navigation({ searchParams, isLoggedIn, categories = [] }) {
@@ -17,6 +17,10 @@ export default function Navigation({ searchParams, isLoggedIn, categories = [] }
 
   // Input
   const [value, setValue] = useState(price || "");
+
+  useEffect(() => {
+    setValue(price || "");
+  }, [price]);
 
   const handleSearch = (e) => {
     e.preventDefault();
@@ -49,7 +53,7 @@ export default function Navigation({ searchParams, isLoggedIn, categories = [] }
 
         {/* Search Box */}
         <div className="flex-1 max-w-3xl mx-8">
-          <form onSubmit={handleSearch} className="flex items-center bg-gray-50 border border-gray-200 rounded-xl p-1 shadow-sm focus-within:ring-2 focus-within:ring-blue-100 focus-within:border-blue-400 transition-all">
+          <form key={`${query}-${categoryId}-${location}`} onSubmit={handleSearch} className="flex items-center bg-gray-50 border border-gray-200 rounded-xl p-1 shadow-sm focus-within:ring-2 focus-within:ring-blue-100 focus-within:border-blue-400 transition-all">
             <select 
               name="category"
               defaultValue={categoryId}
@@ -69,11 +73,22 @@ export default function Navigation({ searchParams, isLoggedIn, categories = [] }
               className="shrink-0 w-[120px] bg-transparent text-gray-600 text-xs font-semibold px-3 py-2 outline-none border-r border-gray-200 cursor-pointer hidden md:block hover:bg-gray-100 transition"
             >
               <option value="">All Locations</option>
+              <option value="Bratislavský kraj">Bratislavský kraj</option>
               <option value="Bratislava">Bratislava</option>
-              <option value="Košice">Košice</option>
-              <option value="Banská Bystrica">Banská Bystrica</option>
-              <option value="Žilina">Žilina</option>
+              <option value="Trnavský kraj">Trnavský kraj</option>
+              <option value="Trnava">Trnava</option>
+              <option value="Trenčiansky kraj">Trenčiansky kraj</option>
+              <option value="Trenčín">Trenčín</option>
+              <option value="Nitriansky kraj">Nitriansky kraj</option>
               <option value="Nitra">Nitra</option>
+              <option value="Žilinský kraj">Žilinský kraj</option>
+              <option value="Žilina">Žilina</option>
+              <option value="Banskobystrický kraj">Banskobystrický kraj</option>
+              <option value="Banská Bystrica">Banská Bystrica</option>
+              <option value="Prešovský kraj">Prešovský kraj</option>
+              <option value="Prešov">Prešov</option>
+              <option value="Košický kraj">Košický kraj</option>
+              <option value="Košice">Košice</option>
             </select>
 
             <input

@@ -54,9 +54,9 @@ async function ListingDetail({ params, searchParams }) {
 
   if (!listing) {
     return (
-      <div className="listing-detail-page">
+      <div className="listing-detail-page flex flex-col min-h-screen">
         <Navigation isLoggedIn={!!session} categories={categories} />
-        <main className="listing-detail-container flex items-center justify-center min-h-[50vh]">
+        <main className="listing-detail-container flex-1 flex items-center justify-center w-full">
           <div className="text-center">
             <h1 className="text-2xl font-bold text-gray-700">Listing not found</h1>
             <p className="text-gray-500 mt-2">The listing you are looking for does not exist or has been removed.</p>
@@ -71,11 +71,11 @@ async function ListingDetail({ params, searchParams }) {
   }
 
   return (
-    <div className="listing-detail-page">
+    <div className="listing-detail-page flex flex-col min-h-screen">
       <ViewCounter id={id} />
       <Navigation isLoggedIn={!!session} categories={categories} />
 
-      <main className="listing-detail-container">
+      <main className="listing-detail-container flex-1 w-full">
         <div className="listing-detail-grid">
           {/* Left Column: Main Details */}
           <div className="listing-main-content">

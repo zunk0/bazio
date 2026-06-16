@@ -101,8 +101,8 @@ export default function EditListingForm({ listing, categories = [] }) {
           </div>
 
           <div className="form-group">
-            <label>Category</label>
-            <select name="category_id" defaultValue={listing.category_id || ''} className="form-input">
+            <label>Category <span className="required">*</span></label>
+            <select name="category_id" defaultValue={listing.category_id || ''} className="form-input" required>
               <option value="">Select a category</option>
               {categories.map((cat) => (
                 <option key={cat.id} value={cat.id}>
@@ -115,14 +115,26 @@ export default function EditListingForm({ listing, categories = [] }) {
 
         {/* Location */}
         <div className="form-group">
-          <label>Location</label>
-          <input
-            type="text"
-            name="location"
-            defaultValue={listing.location || ''}
-            className="form-input"
-            placeholder="e.g. Bratislava"
-          />
+          <label>Location <span className="required">*</span></label>
+          <select name="location" defaultValue={listing.location || ''} className="form-input" required>
+            <option value="">Select a location</option>
+            <option value="Bratislavský kraj">Bratislavský kraj</option>
+            <option value="Bratislava">Bratislava</option>
+            <option value="Trnavský kraj">Trnavský kraj</option>
+            <option value="Trnava">Trnava</option>
+            <option value="Trenčiansky kraj">Trenčiansky kraj</option>
+            <option value="Trenčín">Trenčín</option>
+            <option value="Nitriansky kraj">Nitriansky kraj</option>
+            <option value="Nitra">Nitra</option>
+            <option value="Žilinský kraj">Žilinský kraj</option>
+            <option value="Žilina">Žilina</option>
+            <option value="Banskobystrický kraj">Banskobystrický kraj</option>
+            <option value="Banská Bystrica">Banská Bystrica</option>
+            <option value="Prešovský kraj">Prešovský kraj</option>
+            <option value="Prešov">Prešov</option>
+            <option value="Košický kraj">Košický kraj</option>
+            <option value="Košice">Košice</option>
+          </select>
         </div>
 
         <button

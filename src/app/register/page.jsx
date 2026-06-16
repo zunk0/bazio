@@ -22,14 +22,14 @@ export default function Register() {
               </div>
             )}
             <div>
-              <label className="block text-sm font-medium text-gray-700">Full Name</label>
+              <label className="block text-sm font-medium text-gray-700">Full Name <span className="text-red-500">*</span></label>
               <div className="mt-1">
                 <input name="full_name" type="text" required className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm" />
               </div>
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700">Email address</label>
+              <label className="block text-sm font-medium text-gray-700">Email address <span className="text-red-500">*</span></label>
               <div className="mt-1">
                 <input name="email" type="email" required className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm" />
               </div>
@@ -37,14 +37,14 @@ export default function Register() {
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700">Password</label>
+                <label className="block text-sm font-medium text-gray-700">Password <span className="text-red-500">*</span></label>
                 <div className="mt-1">
                   <input name="password" type="password" required minLength="6" className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm" />
                 </div>
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700">Confirm Password</label>
+                <label className="block text-sm font-medium text-gray-700">Confirm Password <span className="text-red-500">*</span></label>
                 <div className="mt-1">
                   <input name="confirm_password" type="password" required minLength="6" className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm" />
                 </div>
@@ -53,14 +53,32 @@ export default function Register() {
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700">Location</label>
+                <label className="block text-sm font-medium text-gray-700">Location <span className="text-red-500">*</span></label>
                 <div className="mt-1">
-                  <input name="location" type="text" required className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm" />
+                  <select name="location" required className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm bg-white focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+                    <option value="">Select a location</option>
+                    <option value="Bratislavský kraj">Bratislavský kraj</option>
+                    <option value="Bratislava">Bratislava</option>
+                    <option value="Trnavský kraj">Trnavský kraj</option>
+                    <option value="Trnava">Trnava</option>
+                    <option value="Trenčiansky kraj">Trenčiansky kraj</option>
+                    <option value="Trenčín">Trenčín</option>
+                    <option value="Nitriansky kraj">Nitriansky kraj</option>
+                    <option value="Nitra">Nitra</option>
+                    <option value="Žilinský kraj">Žilinský kraj</option>
+                    <option value="Žilina">Žilina</option>
+                    <option value="Banskobystrický kraj">Banskobystrický kraj</option>
+                    <option value="Banská Bystrica">Banská Bystrica</option>
+                    <option value="Prešovský kraj">Prešovský kraj</option>
+                    <option value="Prešov">Prešov</option>
+                    <option value="Košický kraj">Košický kraj</option>
+                    <option value="Košice">Košice</option>
+                  </select>
                 </div>
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700">Phone</label>
+                <label className="block text-sm font-medium text-gray-700">Phone <span className="text-red-500">*</span></label>
                 <div className="mt-1">
                   <input name="phone" type="tel" required className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm" />
                 </div>

@@ -145,8 +145,8 @@ export async function createListing(prevState, formData) {
   const location = formData.get('location') || null;
   const image = formData.get('image');
 
-  if (!title || !price) {
-    return { error: 'Title and price are required.' };
+  if (!title || !price || !location || !category_id) {
+    return { error: 'Title, price, location, and category are required.' };
   }
 
   let db;
@@ -197,8 +197,8 @@ export async function updateListing(prevState, formData) {
   const location = formData.get('location') || null;
   const image = formData.get('image');
 
-  if (!id || !title || !price) {
-    return { error: 'ID, title, and price are required.' };
+  if (!id || !title || !price || !location || !category_id) {
+    return { error: 'ID, title, price, location, and category are required.' };
   }
 
   let db;

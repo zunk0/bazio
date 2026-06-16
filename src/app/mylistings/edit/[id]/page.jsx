@@ -16,6 +16,8 @@ export default async function EditListing({ params }) {
   let listing = null;
   let categories = [];
 
+  let shouldRedirect = false;
+
   try {
     const db = await createConnection();
     const [rows] = await db.execute(
@@ -27,11 +29,11 @@ export default async function EditListing({ params }) {
     );
 
     if (rows.length === 0) {
-      redirect('/mylistings');
+      shouldRedirect = true;
+    } else {
+      listing = rows[0];
+      categories = await getCategories();
     }
-
-    listing = rows[0];
-    categories = await getCategories();
   } catch (err) {
     console.error('Error fetching listing for edit:', err);
     return (
@@ -41,6 +43,10 @@ export default async function EditListing({ params }) {
         <Footer />
       </div>
     );
+  }
+
+  if (shouldRedirect) {
+    redirect('/mylistings');
   }
 
   return (
