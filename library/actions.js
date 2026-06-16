@@ -33,7 +33,7 @@ export async function incrementViews(id) {
     db = await createConnection();
     await db.execute('UPDATE listings SET views = views + 1 WHERE id = ?', [id]);
     cookieStore.set(viewedKey, 'true', {
-      maxAge: 60 * 60 * 24, // 24 hours
+      maxAge: 60 * 60 * 24,
       path: '/',
       httpOnly: true,
     });
@@ -82,7 +82,6 @@ export async function register(prevState, formData) {
     return { error: 'Failed to register account.' };
   }
   
-  // Redirect to login after successful registration
   redirect('/login');
 }
 
@@ -157,7 +156,6 @@ export async function createListing(prevState, formData) {
   }
 
   try {
-    // Insert listing
     const [result] = await db.execute(
       'INSERT INTO listings (user_id, category_id, title, content, price, location) VALUES (?, ?, ?, ?, ?, ?)',
       [session.userId, category_id, title, content, price, location]
@@ -165,7 +163,6 @@ export async function createListing(prevState, formData) {
 
     const listingId = result.insertId;
 
-    // Handle image upload
     const imageUrl = await saveUploadedImage(image);
     if (imageUrl) {
       await db.execute(
@@ -209,22 +206,18 @@ export async function updateListing(prevState, formData) {
   }
 
   try {
-    // Verify ownership
     const [listings] = await db.execute('SELECT * FROM listings WHERE id = ? AND user_id = ?', [id, session.userId]);
     if (listings.length === 0) {
       return { error: 'Unauthorized or listing not found.' };
     }
 
-    // Update listing
     await db.execute(
       'UPDATE listings SET category_id = ?, title = ?, content = ?, price = ?, location = ? WHERE id = ?',
       [category_id, title, content, price, location, id]
     );
 
-    // Handle optional image upload
     const imageUrl = await saveUploadedImage(image);
     if (imageUrl) {
-      // Check if image exists
       const [images] = await db.execute('SELECT * FROM listing_images WHERE listing_id = ?', [id]);
       if (images.length > 0) {
         await db.execute('UPDATE listing_images SET url = ? WHERE listing_id = ?', [imageUrl, id]);
@@ -256,7 +249,6 @@ export async function deleteListing(id) {
   }
 
   try {
-    // Verify ownership
     const [listings] = await db.execute('SELECT * FROM listings WHERE id = ? AND user_id = ?', [id, session.userId]);
     if (listings.length === 0) {
       throw new Error('Unauthorized or listing not found.');
@@ -287,7 +279,6 @@ export async function toggleListingStatus(id) {
   }
 
   try {
-    // Verify ownership
     const [listings] = await db.execute('SELECT * FROM listings WHERE id = ? AND user_id = ?', [id, session.userId]);
     if (listings.length === 0) {
       throw new Error('Unauthorized or listing not found.');

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hostiteľ: localhost
--- Čas generovania: St 03.Jún 2026, 18:31
+-- Čas generovania: Út 16.Jún 2026, 19:06
 -- Verzia serveru: 10.4.28-MariaDB
 -- Verzia PHP: 8.2.4
 
@@ -39,10 +39,26 @@ CREATE TABLE `categories` (
 --
 
 INSERT INTO `categories` (`id`, `name`) VALUES
-(1, 'Elektronika'),
-(2, 'Auto'),
-(3, 'Reality'),
-(4, 'Oblečenie');
+(6, 'Auto-moto'),
+(7, 'Osobné autá'),
+(8, 'Motocykle'),
+(9, 'Náhradné diely'),
+(10, 'Reality'),
+(11, 'Byty'),
+(12, 'Domy'),
+(13, 'Pozemky'),
+(14, 'Práca'),
+(15, 'Elektronika'),
+(16, 'Mobily'),
+(17, 'Počítače'),
+(18, 'TV a audio'),
+(19, 'Bývanie a nábytok'),
+(20, 'Domáce spotrebiče'),
+(21, 'Oblečenie'),
+(22, 'Zvieratá'),
+(23, 'Šport'),
+(24, 'Služby'),
+(25, 'Ostatné');
 
 -- --------------------------------------------------------
 
@@ -132,25 +148,25 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT pre tabuľku `categories`
 --
 ALTER TABLE `categories`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
 
 --
 -- AUTO_INCREMENT pre tabuľku `listings`
 --
 ALTER TABLE `listings`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=62;
 
 --
 -- AUTO_INCREMENT pre tabuľku `listing_images`
 --
 ALTER TABLE `listing_images`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
 --
 -- AUTO_INCREMENT pre tabuľku `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- Obmedzenie pre exportované tabuľky

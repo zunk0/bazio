@@ -138,9 +138,9 @@ async function ListingDetail({ params, searchParams }) {
                   <p>Member since {listing.user_created_at ? new Date(listing.user_created_at).getFullYear() : "2024"}</p>
                 </div>
               </div>
-              <a href={`/?user_id=${listing.user_id}`} className="view-profile-link">
+              <Link href={`/?user_id=${listing.user_id}`} className="view-profile-link">
                 View Seller's Other Listings
-              </a>
+              </Link>
             </div>
 
             {listing.phone && (

@@ -9,7 +9,6 @@ export default function ListingImage({ src, alt, imgClassName, noImageClassName 
     src.trim() === "" ||
     src.trim() === "/";
 
-  // Fallback UI
   const fallback = (
     <div 
       className={noImageClassName} 
@@ -39,13 +38,10 @@ export default function ListingImage({ src, alt, imgClassName, noImageClassName 
     );
   }
 
-  // Escape attributes to prevent XSS
   const safeSrc = src.replace(/"/g, '&quot;');
   const safeAlt = (alt || "Listing Image").replace(/"/g, '&quot;');
   const safeClass = (imgClassName || "").replace(/"/g, '&quot;');
 
-  // Render an img tag with a native HTML onerror attribute to instantly hide it if broken.
-  // This executes immediately in the browser, long before React even hydrates.
   const imgHtml = `<img src="${safeSrc}" alt="${safeAlt}" class="${safeClass}" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: 1;" onerror="this.style.opacity='0';" />`;
 
   return (

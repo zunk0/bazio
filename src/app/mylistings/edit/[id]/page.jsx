@@ -5,6 +5,7 @@ import Navigation from '@/components/Navigation';
 import Footer from '@/components/Footer';
 import EditListingForm from './EditListingForm';
 import DbError from '@/components/DbError';
+import Link from 'next/link';
 
 export default async function EditListing({ params }) {
   const { id } = await params;
@@ -54,9 +55,9 @@ export default async function EditListing({ params }) {
       <Navigation isLoggedIn={true} categories={categories} />
 
       <main className="add-listing-container">
-        <a href="/mylistings" className="add-listing-back">
+        <Link href="/mylistings" className="add-listing-back">
           ← Back to My Listings
-        </a>
+        </Link>
 
         <h1>Edit Listing</h1>
         <p className="add-listing-subtitle">

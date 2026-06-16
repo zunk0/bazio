@@ -12,7 +12,6 @@
   box-shadow: 0 8px 20px rgba(0,0,0,0.12);
 }
 
-/* Image */
 .card-image-container {
   aspect-ratio: 1 / 1;
   background-color: #e5e7eb;
@@ -40,7 +39,6 @@
   color: #6b7280;
 }
 
-/* Content */
 .card-content {
   padding: 16px;
 }
@@ -57,7 +55,6 @@
   overflow: hidden;
 }
 
-/* Meta row */
 .card-meta {
   display: flex;
   align-items: center;
@@ -79,7 +76,6 @@
   color: #2563eb;
 }
 
-/* Location */
 .card-location {
   font-size: 14px;
   color: #4b5563;

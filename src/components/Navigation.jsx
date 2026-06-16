@@ -11,11 +11,8 @@ export default function Navigation({ searchParams, isLoggedIn, categories = [] }
   const categoryId = searchParams?.category || "";
   const location = searchParams?.location || "";
   const price = searchParams?.price || "";
-
-  // Image
   const image = {width: 130, height: 40};
 
-  // Input
   const [value, setValue] = useState(price || "");
 
   useEffect(() => {

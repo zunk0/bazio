@@ -33,7 +33,6 @@ export default async function Profile() {
   }
 
   if (!user) {
-    // Session is valid but user deleted? Clear session.
     redirect('/login?callbackUrl=/profile');
   }
 

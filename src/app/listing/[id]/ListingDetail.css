@@ -21,7 +21,6 @@
   }
 }
 
-/* Main Content Area */
 .listing-main-content {
   background-color: white;
   border-radius: 12px;
@@ -114,7 +113,6 @@
   white-space: pre-wrap;
 }
 
-/* Sidebar */
 .listing-sidebar {
   display: flex;
   flex-direction: column;
@@ -229,7 +227,6 @@
   text-decoration: underline;
 }
 
-/* Contact Info Card */
 .contact-info-card {
   background-color: white;
   padding: 24px;
@@ -266,7 +263,6 @@
   background-color: #e5e7eb;
 }
 
-/* Admin Actions */
 .admin-actions-card {
   background-color: #fdfaf6;
   padding: 24px;

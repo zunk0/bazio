@@ -1,3 +1,4 @@
+import Link from "next/link";
 import ListingCard from "./ListingCard";
 import { createConnection } from "../../library/db";
 import { formatImageUrl } from "../../library/utils";
@@ -13,6 +14,7 @@ export default async function ListingsGrid({ listings, searchParams }) {
   const userId = searchParams?.user_id || "";
 
   const price = searchParams?.price || "";
+  const limitParam = parseInt(searchParams?.limit) || 12;
 
   try {
     const connection = await createConnection();
@@ -63,7 +65,7 @@ export default async function ListingsGrid({ listings, searchParams }) {
       params.push(userId);
     }
 
-    sql += " ORDER BY listings.id DESC LIMIT 12";
+    sql += ` ORDER BY listings.id DESC LIMIT ${limitParam}`;
 
     const [result] = await connection.execute(sql, params);
     rows = result;
@@ -74,6 +76,14 @@ export default async function ListingsGrid({ listings, searchParams }) {
 
   const displayListings = listings || rows;
   const searchTitle = query ? `Results for ${query}` : (userId ? `Results for user ${userName || userId}` : (categoryId || location ? "Filtered Listings" : "Recent Listings"));
+
+  const currentParams = new URLSearchParams();
+  if (query) currentParams.set("q", query);
+  if (categoryId) currentParams.set("category", categoryId);
+  if (location) currentParams.set("location", location);
+  if (price) currentParams.set("price", price);
+  if (userId) currentParams.set("user_id", userId);
+  currentParams.set("limit", limitParam + 12);
 
   return (
     <section className="listings-section">
@@ -103,13 +113,15 @@ export default async function ListingsGrid({ listings, searchParams }) {
             </div>
             <h3 className="text-xl font-semibold text-gray-700">No listings found</h3>
             <p className="text-gray-500 mt-2">Try adjusting your search or filters to find what you're looking for.</p>
-            <a href="/" className="mt-6 inline-block text-blue-600 font-medium hover:underline">Clear all filters</a>
+            <Link href="/" className="mt-6 inline-block text-blue-600 font-medium hover:underline">Clear all filters</Link>
           </div>
         )}
 
-        {displayListings.length >= 12 && (
+        {displayListings.length >= limitParam && (
           <div className="listings-load-more">
-            <button className="load-more-btn">Load More</button>
+            <Link href={`?${currentParams.toString()}`} scroll={false} className="load-more-btn block text-center" style={{textDecoration: 'none'}}>
+              Load More
+            </Link>
           </div>
         )}
       </div>
